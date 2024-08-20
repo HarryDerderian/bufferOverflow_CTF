@@ -2,6 +2,7 @@
 #include <cstring>
 #include <chrono>
 #include <thread>
+#include <cstdio>
 using namespace std;
 
 // TERMINAL TEXT COLORS
@@ -26,24 +27,9 @@ void correctPassword()
    system("/bin/sh");
 }
 
-bool login()
+void checkPassword(char* password)
 {
-   cout << "\n\n\n";
-   printWithDelay("O.S.S. COMMAND SHELL INITIATED...", std::chrono::milliseconds(200), RED);
-   printWithDelay(">>> ROOT ACCESS IMMINENT <<<", std::chrono::milliseconds(200), RED);
-   printWithDelay(">>> Enter Password to Elevate to ROOT SHELL:", std::chrono::milliseconds(200), RED);
-   printWithDelay(">>> WARNING: FULL SYSTEM CONTROL WILL BE GRANTED.", std::chrono::milliseconds(200), RED);
-   cout << YELLOW << ">>> PASSWORD: " << RESET;
-   char password[20]; // Vulnerable to stack-based buffer overflow attack
-   cin >> password;
-   // If exploited correctly, the stack pointer can be overwritten to return to the address of the correctPassword function.
-   return strcmp(password, "superSecretPassword") == 0;
-}
-
-int main()
-{
-   displayBanner();
-   if (login())
+   if (strcmp(password,"superSecretPassword") == 0)
       correctPassword();
    else
    {
@@ -52,6 +38,31 @@ int main()
       cout << "Ensure your input is meticulously crafted—sometimes even the smallest buffer can spell disaster.\n";
       cout << "Please verify your details and try again.\n";
    }
+
+}
+
+
+void login()
+{
+   cout << "\n\n\n";
+   printWithDelay("O.S.S. COMMAND SHELL INITIATED...", std::chrono::milliseconds(200), RED);
+   printWithDelay(">>> ROOT ACCESS IMMINENT <<<", std::chrono::milliseconds(200), RED);
+   printWithDelay(">>> Enter Password to Elevate to ROOT SHELL:", std::chrono::milliseconds(200), RED);
+   printWithDelay(">>> WARNING: FULL SYSTEM CONTROL WILL BE GRANTED.", std::chrono::milliseconds(200), RED);
+   cout << YELLOW << ">>> PASSWORD: " << RESET;
+   char password[8]; // Vulnerable to stack-based buffer overflow attack
+   gets(password);
+   return checkPassword(password);
+   //cin >> password;
+   // If exploited correctly, the stack pointer can be overwritten to return to the address of the correctPassword function.
+   //return strcmp(password, "superSecretPassword") == 0;
+}
+
+
+int main()
+{
+   displayBanner();
+   login();
 }
 
 void displayWelcome()

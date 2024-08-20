@@ -1,0 +1,2 @@
+sudo sh -c "(python3 exploit2.py; cat) | ./out"
+

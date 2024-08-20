@@ -1,0 +1,2 @@
+g++ -m32 -no-pie -fno-stack-protector -std=c++11 -o out main.cpp
+
